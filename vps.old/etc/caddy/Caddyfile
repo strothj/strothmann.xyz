@@ -1,0 +1,9 @@
+tls cloudedone@gmail.com
+tv.strothmann.xyz {
+  gzip
+  log /var/log/caddy/access_tv.log
+  root /srv/http/tv/www
+}
+strothmann.xyz {
+  redir https://tv.strothmann.xyz/
+}

@@ -1,0 +1,86 @@
+gateway:
+  build: gateway
+  ports:
+    - "1025:1025"
+  restart: always
+  links:
+    - caddy
+caddy:
+  build: caddy
+  links:
+    - rutorrent
+    - sonarr
+    - jackett
+    - couchpotato
+  ports:
+    - "80:80"
+  restart: always
+samba:
+  build: samba
+  ports:
+    - "139:139"
+    - "445:445"
+  volumes:
+    - /storage/share:/share
+  #command: -u "share;share" -s "share;/share;no;no;no;share" -t EST5EDT
+  command: -s "share;/share;yes;no;yes" -t EST5EDT
+  restart: always
+rutorrent:
+  #image: linuxserver/rutorrent
+  build: rutorrent
+  volumes:
+    - /storage/rutorrent:/config
+    - /storage/share:/downloads
+  environment:
+    PGID: 1001
+    PUID: 1001
+    TZ: "America/New_York"
+  ports:
+    - "45566-45576:45566-45576"
+  restart: always
+plex:
+  build: docker-plex-media-server/
+  ports:
+    - "32400:32400"
+  volumes:
+    - /storage/share:/media
+    - /storage/plex-config:/config
+  environment:
+    PLEX_LOGIN:
+    PLEX_PASSWORD:
+  net: "host"
+  restart: always
+  user: plex
+sonarr:
+  image: linuxserver/sonarr
+  volumes:
+    - /dev/rtc:/dev/rtc
+    - /storage/sonarr:/config
+    - /storage/share:/downloads
+  environment:
+    PGID: 1001
+    PUID: 1001
+  links:
+    - jackett
+    - rutorrent
+jackett:
+  image: linuxserver/jackett
+  volumes:
+    - /etc/localtime:/etc/localtime
+    - /storage/jackett:/config
+    - /storage/share:/downloads
+  environment:
+    PGID: 1001
+    PUID: 1001
+couchpotato:
+  image: linuxserver/couchpotato
+  volumes:
+    - /etc/localtime:/etc/localtime:ro
+    - /storage/couchpotato:/config
+    - /storage/share:/downloads
+    #- /storage/share/movies:/movies
+  environment:
+    PGID: 1001
+    PUID: 1001
+  links:
+    - rutorrent

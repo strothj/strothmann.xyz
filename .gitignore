@@ -1,0 +1,6 @@
+.vagrant
+.caddy
+cert.pem
+key.pem
+oauth2secret.go
+.envrc
