@@ -1,9 +1,9 @@
-tls cloudedone@gmail.com
 tv.strothmann.xyz {
+  tls cloudedone@gmail.com
   gzip
-  log /var/log/caddy/access_tv.log
-  root /srv/http/tv/www
+  proxy / http://localhost:4180
 }
 strothmann.xyz {
+  tls cloudedone@gmail.com
   redir https://tv.strothmann.xyz/
 }

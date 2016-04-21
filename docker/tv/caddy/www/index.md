@@ -1,3 +1,5 @@
+#####[Sign Out](/oauth2/sign_in)
+---
 # Apps
 * [rutorrent](/rutorrent/) - *BitTorrent Downloader*
 * [sonarr](/sonarr/) - *TV Download Manager*
