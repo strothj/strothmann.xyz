@@ -1,6 +1,7 @@
 tv.strothmann.xyz {
   tls cloudedone@gmail.com
   gzip
+  proxy /sonarr/feed/calendar/ http://localhost:8080
   proxy / http://localhost:4180
 }
 strothmann.xyz {
