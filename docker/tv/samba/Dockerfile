@@ -18,7 +18,7 @@ RUN groupadd --gid 1001 smbuser && \
     echo '   force create mode = 0664' >>/etc/samba/smb.conf && \
     echo '   force directory mode = 0775' >>/etc/samba/smb.conf && \
     echo '   force user = smbuser' >>/etc/samba/smb.conf && \
-    echo '   force group = smbuser' >>/etc/samba/smb.conf && \
+    echo '   force group = users' >>/etc/samba/smb.conf && \
     echo '   load printers = no' >>/etc/samba/smb.conf && \
     echo '   printing = bsd' >>/etc/samba/smb.conf && \
     echo '   printcap name = /dev/null' >>/etc/samba/smb.conf && \

@@ -65,7 +65,7 @@ timezone() { local timezone="${1:-EST5EDT}"
         return
     }
 
-    if [[ $(cat /etc/timezone) != $timezone ]]; then
+    if [[ -w /etc/timezone && $(cat /etc/timezone) != $timezone ]]; then
         echo "$timezone" >/etc/timezone
         ln -sf /usr/share/zoneinfo/$timezone /etc/localtime
         dpkg-reconfigure -f noninteractive tzdata >/dev/null 2>&1
@@ -82,6 +82,14 @@ user() { local name="${1}" passwd="${2}"
     echo "$passwd" | tee - | smbpasswd -s -a "$name"
 }
 
+### workgroup: set the workgroup
+# Arguments:
+#   workgroup) the name to set
+# Return: configure the correct workgroup
+workgroup() { local workgroup="${1}" file=/etc/samba/smb.conf
+    sed -i 's|^\( *workgroup = \).*|\1'"$workgroup"'|' $file
+}
+
 ### usage: Help
 # Arguments:
 #   none)
@@ -91,7 +99,8 @@ usage() { local RC=${1:-0}
 Options (fields in '[]' are optional, '<>' are required):
     -h          This help
     -i \"<path>\" Import smbpassword
-                required arg: \"<path>\" - full file path in container to import
+                required arg: \"<path>\" - full file path in container
+    -n          Start the 'nmbd' daemon to advertise the shares
     -s \"<name;/path>[;browsable;readonly;guest;users]\" Configure a share
                 required arg: \"<name>;<comment>;</path>\"
                 <name> is how it's called for clients
@@ -108,19 +117,24 @@ Options (fields in '[]' are optional, '<>' are required):
                 required arg: \"<username>;<passwd>\"
                 <username> for user
                 <password> for user
+    -w \"<workgroup>\"       Configure the workgroup (domain) samba should use
+                required arg: \"<workgroup>\"
+                <workgroup> for samba
 
 The 'command' (if provided and valid) will be run instead of samba
 " >&2
     exit $RC
 }
 
-while getopts ":hi:t:u:s:" opt; do
+while getopts ":hi:ns:t:u:w:" opt; do
     case "$opt" in
         h) usage ;;
         i) import "$OPTARG" ;;
+        n) NMBD="true" ;;
         s) eval share $(sed 's/^\|$/"/g; s/;/" "/g' <<< $OPTARG) ;;
-        u) eval user $(sed 's/;/ /g' <<< $OPTARG) ;;
         t) timezone "$OPTARG" ;;
+        u) eval user $(sed 's|;| |g' <<< $OPTARG) ;;
+        w) workgroup "$OPTARG" ;;
         "?") echo "Unknown option: -$OPTARG"; usage 1 ;;
         ":") echo "No argument value for option: -$OPTARG"; usage 2 ;;
     esac
@@ -128,6 +142,7 @@ done
 shift $(( OPTIND - 1 ))
 
 [[ "${TZ:-""}" ]] && timezone "$TZ"
+[[ "${WORKGROUP:-""}" ]] && workgroup "$WORKGROUP"
 
 if [[ $# -ge 1 && -x $(which $1 2>&-) ]]; then
     exec "$@"
@@ -137,5 +152,6 @@ elif [[ $# -ge 1 ]]; then
 elif ps -ef | egrep -v grep | grep -q smbd; then
     echo "Service already running, please restart container to apply changes"
 else
-    exec ionice -c 3 smbd -FS
+    [[ ${NMBD:-""} ]] && ionice -c 3 nmbd -D
+    exec ionice -c 3 smbd -FS </dev/null
 fi
