@@ -5,6 +5,18 @@ gateway:
   restart: always
   links:
     - caddy
+plexrequests:
+  image: lsiodev/plexrequests
+  links:
+    - sonarr
+    - couchpotato
+  volumes:
+    - /etc/localtime:/etc/localtime
+    - /storage/plexrequests:/config
+  environment:
+    PGID: 1001
+    PUID: 1001
+    URL_BASE: /plexrequests/
 caddy:
   build: caddy
   links:
@@ -12,6 +24,7 @@ caddy:
     - sonarr
     - jackett
     - couchpotato
+    - plexrequests
   ports:
     - "80:80"
   restart: always

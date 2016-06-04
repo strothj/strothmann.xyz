@@ -5,6 +5,7 @@
 * [sonarr](/sonarr/) - *TV Download Manager*
 * [couchpotato](/couchpotato/) - *Movie Download Manager*
 * [plex](https://plex.tv/web) - *Media Player*
+* [plex requests](/plexrequests/) - *Plex Requests*
 
 ---
 #### Admin Tools

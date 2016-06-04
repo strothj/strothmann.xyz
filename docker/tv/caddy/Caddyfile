@@ -10,3 +10,4 @@ proxy /jackett/ http://jackett:9117 {
   without /jackett
 }
 proxy /couchpotato/ http://couchpotato:5050
+proxy /plexrequests/ http://plexrequests:3000
