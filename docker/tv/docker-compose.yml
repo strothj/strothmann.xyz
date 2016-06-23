@@ -17,6 +17,7 @@ plexrequests:
     PGID: 1001
     PUID: 1001
     URL_BASE: /plexrequests/
+  restart: always
 caddy:
   build: caddy
   links:
@@ -76,6 +77,7 @@ sonarr:
   links:
     - jackett
     - rutorrent
+  restart: always
 jackett:
   image: linuxserver/jackett
   volumes:
@@ -85,15 +87,16 @@ jackett:
   environment:
     PGID: 1001
     PUID: 1001
+  restart: always
 couchpotato:
   image: linuxserver/couchpotato
   volumes:
     - /etc/localtime:/etc/localtime:ro
     - /storage/couchpotato:/config
     - /storage/share:/downloads
-    #- /storage/share/movies:/movies
   environment:
     PGID: 1001
     PUID: 1001
   links:
     - rutorrent
+  restart: always
