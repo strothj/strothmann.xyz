@@ -100,9 +100,9 @@ couchpotato:
   links:
     - rutorrent
   restart: always
-logspout:
-  image: gliderlabs/logspout
-  volumes:
-    - /var/run/docker.sock:/var/run/docker.sock
-  command: syslog://logs4.papertrailapp.com:42065
-  restart: always
+# logspout:
+#   image: gliderlabs/logspout
+#   volumes:
+#     - /var/run/docker.sock:/var/run/docker.sock
+#   command: syslog://logs4.papertrailapp.com:42065
+#   restart: always
