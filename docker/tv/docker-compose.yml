@@ -6,12 +6,12 @@ gateway:
   links:
     - caddy
 plexrequests:
-  image: lsiodev/plexrequests
+  image: linuxserver/plexrequests
   links:
     - sonarr
     - couchpotato
   volumes:
-    - /etc/localtime:/etc/localtime
+    - /etc/localtime:/etc/localtime:ro
     - /storage/plexrequests:/config
   environment:
     PGID: 1001
