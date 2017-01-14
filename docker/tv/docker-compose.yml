@@ -37,7 +37,7 @@ samba:
   volumes:
     - /storage/share:/share
   #command: -u "share;share" -s "share;/share;no;no;no;share" -t EST5EDT
-  command: -s "share;/share;yes;no;yes" -t EST5EDT
+  command: -s "share;/share;yes;no;yes" -s "share2;/share/disk2;yes;no;yes" -t EST5EDT
   restart: always
 rutorrent:
   #image: linuxserver/rutorrent
