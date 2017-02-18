@@ -1,7 +1,6 @@
 :80
 tls off
 root /var/www
-markdown
 proxy /rutorrent/ rutorrent:80 {
   without /rutorrent
 }
