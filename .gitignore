@@ -1,8 +1,0 @@
-.vagrant
-.caddy
-cert.pem
-key.pem
-oauth2secret.go
-.envrc
-oauth2_proxy.cfg
-authenticated_emails_file

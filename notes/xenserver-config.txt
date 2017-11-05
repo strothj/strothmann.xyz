@@ -1,9 +1,0 @@
-http://discussions.citrix.com/topic/378709-xenserver-7-sata-passthrough-to-vm/
-
-/dev/xvdb1 /storage
-/dev/xvdc1 /storage/share/disk2
-
-groupadd --gid 1001 storage
-useradd --system --uid 1001 --gid 1001 -M --shell /usr/sbin/nologin storage
-mkdir storage
-chown storage:storage storage
