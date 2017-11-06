@@ -1,0 +1,37 @@
+{
+  "name": "strothmann.xyz",
+  "version": "2.0.0",
+  "description": "Media Server",
+  "main": "index.js",
+  "repository": "git@github.com:strothj/strothmann.xyz.git",
+  "author": "jason@jasons.io <jason@jasons.io>",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "build": "npm-run-all clean build:*",
+    "build:plex": "tsc --project src/plex/tsconfig.json",
+    "clean": "rimraf build",
+    "start": "npm-run-all -p start:*",
+    "start:plex": "npm-run-all \"build:plex --watch\""
+  },
+  "devDependencies": {
+    "@types/commander": "^2.11.0",
+    "@types/node": "^8.0.47",
+    "@types/node-fetch": "^1.6.7",
+    "@types/progress": "^2.0.0",
+    "npm-run-all": "^4.1.1",
+    "prettier": "^1.7.4",
+    "rimraf": "^2.6.2",
+    "tslint": "^5.8.0",
+    "tslint-config-airbnb": "^5.3.0",
+    "tslint-config-prettier": "^1.6.0",
+    "tslint-language-service": "^0.9.6",
+    "tslint-plugin-prettier": "^1.3.0",
+    "typescript": "^2.6.1"
+  },
+  "dependencies": {
+    "commander": "^2.11.0",
+    "node-fetch": "^1.7.3",
+    "progress": "^2.0.0"
+  }
+}
